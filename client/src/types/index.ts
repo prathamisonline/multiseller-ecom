@@ -9,14 +9,15 @@ export interface User {
 }
 
 export interface Seller {
-  id: string;
-  userId: string;
+  _id: string;
+  user: string;
   storeName: string;
-  storeDescription: string;
-  status: 'pending' | 'approved' | 'suspended';
+  description: string;
+  slug: string;
+  status: 'pending' | 'approved' | 'rejected' | 'suspended';
   businessDetails: {
-    businessName: string;
-    gstNumber: string;
+    gstNumber?: string;
+    pan: string;
     address: string;
   };
   bankDetails: {
@@ -53,6 +54,20 @@ export interface CartItem {
   quantity: number;
 }
 
+export interface Address {
+  _id: string;
+  fullName: string;
+  phone: string;
+  alternatePhone?: string;
+  addressLine: string;
+  landmark?: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  addressType: 'home' | 'work' | 'other';
+  isDefault: boolean;
+}
+
 export interface Order {
   id: string;
   userId: string;
@@ -64,15 +79,7 @@ export interface Order {
   }[];
   totalAmount: number;
   status: 'pending' | 'paid' | 'shipped' | 'delivered' | 'cancelled';
-  shippingAddress: {
-    fullName: string;
-    addressLine1: string;
-    city: string;
-    state: string;
-    postalCode: string;
-    country: string;
-    phone: string;
-  };
+  shippingAddress: Address;
   paymentStatus: 'pending' | 'completed' | 'failed';
   razorpayOrderId?: string;
   createdAt: string;

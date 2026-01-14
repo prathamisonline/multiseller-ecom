@@ -330,3 +330,100 @@ export const rejectProduct = catchAsync(async (req: Request, res: Response, next
         new ApiResponse(200, product, 'Product rejected')
     );
 });
+
+// ============================================
+// USER MANAGEMENT (Admin)
+// ============================================
+
+/**
+ * @desc    Get all users
+ * @route   GET /api/v1/admin/users
+ * @query   role - Filter by role (user, seller, admin)
+ * @access  Private/Admin
+ */
+export const getAllUsers = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const queryObj: { role?: string } = {};
+
+    if (req.query.role) {
+        queryObj.role = req.query.role as string;
+    }
+
+    const users = await User.find(queryObj).sort({ createdAt: -1 });
+
+    res.status(200).json(
+        new ApiResponse(200, { count: users.length, users }, 'Users fetched successfully')
+    );
+});
+
+/**
+ * @desc    Get single user
+ * @route   GET /api/v1/admin/users/:id
+ * @access  Private/Admin
+ */
+export const getUserByIdAdmin = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+        return next(new AppError('User not found', 404));
+    }
+
+    res.status(200).json(
+        new ApiResponse(200, user, 'User fetched successfully')
+    );
+});
+
+/**
+ * @desc    Update user status (Suspend/Activate)
+ * @route   PUT /api/v1/admin/users/:id/status
+ * @body    { isActive: boolean }
+ * @access  Private/Admin
+ */
+export const updateUserStatus = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const { isActive } = req.body;
+
+    if (typeof isActive !== 'boolean') {
+        return next(new AppError('Please provide isActive status', 400));
+    }
+
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+        return next(new AppError('User not found', 404));
+    }
+
+    // Prevent suspending self
+    if (user._id.toString() === req.user!._id.toString()) {
+        return next(new AppError('Cannot update your own status', 400));
+    }
+
+    user.isActive = isActive;
+    await user.save();
+
+    res.status(200).json(
+        new ApiResponse(200, user, `User ${isActive ? 'activated' : 'suspended'} successfully`)
+    );
+});
+
+/**
+ * @desc    Delete user
+ * @route   DELETE /api/v1/admin/users/:id
+ * @access  Private/Admin
+ */
+export const deleteUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+        return next(new AppError('User not found', 404));
+    }
+
+    // Prevent deleting self
+    if (user._id.toString() === req.user!._id.toString()) {
+        return next(new AppError('Cannot delete yourself', 400));
+    }
+
+    await user.deleteOne();
+
+    res.status(200).json(
+        new ApiResponse(200, {}, 'User deleted successfully')
+    );
+});

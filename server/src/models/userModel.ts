@@ -7,7 +7,8 @@ export interface IUser extends Document {
     name: string;
     email: string;
     password?: string;
-    role: 'user' | 'admin';
+    role: 'user' | 'seller' | 'admin';
+    isActive: boolean;
     createdAt: Date;
     matchPassword: (enteredPassword: string) => Promise<boolean>;
     getSignedJwtToken: () => string;
@@ -36,8 +37,12 @@ const UserSchema: Schema = new Schema(
         },
         role: {
             type: String,
-            enum: ['user', 'admin'],
+            enum: ['user', 'seller', 'admin'],
             default: 'user',
+        },
+        isActive: {
+            type: Boolean,
+            default: true,
         },
         createdAt: {
             type: Date,

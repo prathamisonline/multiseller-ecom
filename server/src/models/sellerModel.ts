@@ -19,6 +19,7 @@ export interface ISeller extends Document {
         bankName: string;
         accountId?: string; // Razorpay Linked Account ID
     };
+    commissionRate: number;
     status: 'pending' | 'approved' | 'rejected' | 'suspended';
     adminRemarks?: string; // Reason for rejection or suspension
     createdAt: Date;
@@ -77,6 +78,12 @@ const SellerSchema: Schema = new Schema(
             ifscCode: String,
             bankName: String,
             accountId: String,
+        },
+        commissionRate: {
+            type: Number,
+            default: 5, // Default 5% platform fee
+            min: 0,
+            max: 100,
         },
         status: {
             type: String,

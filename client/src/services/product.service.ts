@@ -22,4 +22,30 @@ export const productService = {
         const response = await api.get(`/qrcode/product/${productId}`);
         return response.data;
     },
+
+    // Seller Methods
+    getMyProducts: async (params?: { status?: string }): Promise<{ success: boolean; data: { count: number; products: Product[] } }> => {
+        const response = await api.get('/products/my-products', { params });
+        return response.data;
+    },
+
+    getSellerProductById: async (id: string): Promise<{ success: boolean; data: Product }> => {
+        const response = await api.get(`/products/${id}`);
+        return response.data;
+    },
+
+    createProduct: async (data: any): Promise<{ success: boolean; data: Product }> => {
+        const response = await api.post('/products', data);
+        return response.data;
+    },
+
+    updateProduct: async (id: string, data: any): Promise<{ success: boolean; data: Product }> => {
+        const response = await api.put(`/products/${id}`, data);
+        return response.data;
+    },
+
+    deleteProduct: async (id: string): Promise<{ success: boolean; message: string }> => {
+        const response = await api.delete(`/products/${id}`);
+        return response.data;
+    },
 };

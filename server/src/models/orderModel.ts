@@ -16,6 +16,9 @@ export interface IOrderItem {
     image: string; // Snapshot
     quantity: number;
     itemTotal: number; // price * quantity
+    commissionRate?: number; // % at time of order
+    commissionAmount?: number; // Calculated amount
+    sellerEarnings?: number; // itemTotal - commissionAmount
 }
 
 /**
@@ -137,6 +140,9 @@ const OrderItemSchema = new Schema(
             required: true,
             min: 0,
         },
+        commissionRate: Number,
+        commissionAmount: Number,
+        sellerEarnings: Number,
     },
     { _id: false }
 );

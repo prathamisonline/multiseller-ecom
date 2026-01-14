@@ -35,6 +35,10 @@ export const protect = catchAsync(async (req: Request, res: Response, next: Next
             return next(new AppError('No user found with this id', 404));
         }
 
+        if (!user.isActive) {
+            return next(new AppError('Your account has been suspended. Please contact support.', 403));
+        }
+
         req.user = user;
 
         next();

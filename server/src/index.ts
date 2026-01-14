@@ -38,21 +38,23 @@ import qrcodeRoutes from './routes/qrcodeRoutes';
 import analyticsRoutes from './routes/analyticsRoutes';
 import exportRoutes from './routes/exportRoutes';
 import shippingRoutes from './routes/shippingRoutes';
+import addressRoutes from './routes/addressRoutes';
 
 // Routes
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/sellers', sellerRoutes);
 app.use('/api/v1/admin', adminRoutes);
 app.use('/api/v1/products', productRoutes);
-app.use('/api/v1/store', storeRoutes); // Public storefront routes
-app.use('/api/v1/cart', cartRoutes); // Cart management routes
-app.use('/api/v1/orders', orderRoutes); // Order management routes
-app.use('/api/v1/payments', paymentRoutes); // Payment processing routes
-app.use('/api/v1/seller-orders', sellerOrderRoutes); // Seller order management
-app.use('/api/v1/qrcode', qrcodeRoutes); // QR code generation
-app.use('/api/v1/analytics', analyticsRoutes); // Analytics & reports
-app.use('/api/v1/exports', exportRoutes); // Data exports (Excel)
-app.use('/api/v1/shipping', shippingRoutes); // Fulfillment (Shipping labels)
+app.use('/api/v1/store', storeRoutes);
+app.use('/api/v1/cart', cartRoutes);
+app.use('/api/v1/orders', orderRoutes);
+app.use('/api/v1/payments', paymentRoutes);
+app.use('/api/v1/seller-orders', sellerOrderRoutes);
+app.use('/api/v1/qrcode', qrcodeRoutes);
+app.use('/api/v1/analytics', analyticsRoutes);
+app.use('/api/v1/exports', exportRoutes);
+app.use('/api/v1/shipping', shippingRoutes);
+app.use('/api/v1/addresses', addressRoutes);
 
 app.get('/', (req: Request, res: Response) => {
     res.send('API is running...');

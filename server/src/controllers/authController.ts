@@ -61,6 +61,11 @@ export const login = catchAsync(async (req: Request, res: Response, next: NextFu
         return next(new AppError('Invalid credentials', 401));
     }
 
+    // Check if user is suspended
+    if (!user.isActive) {
+        return next(new AppError('Your account has been suspended. Please contact support.', 403));
+    }
+
     // Check if password matches
     const isMatch = await user.matchPassword(password);
 

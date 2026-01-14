@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import Order from '../models/orderModel';
 import Cart from '../models/cartModel';
 import Product from '../models/productModel';
+import Seller from '../models/sellerModel';
 import { catchAsync } from '../utils/catchAsync';
 import { AppError } from '../utils/AppError';
 import { ApiResponse } from '../utils/ApiResponse';
@@ -80,8 +81,15 @@ export const createOrder = catchAsync(async (req: Request, res: Response, next: 
             product.stock -= cartItem.quantity;
             await product.save({ session });
 
+            // Fetch seller details for commission rate
+            const sellerDetails = await Seller.findOne({ user: product.seller }).session(session);
+            const commissionRate = sellerDetails ? sellerDetails.commissionRate : 5; // Default 5%
+
             // Prepare order item
             const itemTotal = product.price * cartItem.quantity;
+            const commissionAmount = (itemTotal * commissionRate) / 100;
+            const sellerEarnings = itemTotal - commissionAmount;
+
             orderItems.push({
                 product: product._id,
                 seller: product.seller,
@@ -90,6 +98,9 @@ export const createOrder = catchAsync(async (req: Request, res: Response, next: 
                 image: product.images[0] || '',
                 quantity: cartItem.quantity,
                 itemTotal,
+                commissionRate,
+                commissionAmount,
+                sellerEarnings,
             });
 
             itemsTotal += itemTotal;

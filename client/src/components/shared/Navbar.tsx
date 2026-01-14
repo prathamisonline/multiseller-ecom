@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import { useAuthStore } from '@/store/authStore';
 import { Button } from '@/components/ui/button';
-import { ShoppingCart, User, LogOut, LayoutDashboard, Store } from 'lucide-react';
+import { User, LogOut, Store, Package } from 'lucide-react';
+import CartDrawer from './CartDrawer';
 
 export default function Navbar() {
     const { user, isAuthenticated, logout } = useAuthStore();
@@ -25,6 +26,11 @@ export default function Navbar() {
                     <Link href="/categories" className="hover:text-indigo-400 transition-colors">
                         Categories
                     </Link>
+                    {isAuthenticated && user?.role === 'user' && (
+                        <Link href="/seller/onboarding" className="hover:text-amber-400 transition-colors text-amber-500 font-bold">
+                            Become a Seller
+                        </Link>
+                    )}
                     {user?.role === 'seller' && (
                         <Link href="/seller" className="hover:text-indigo-400 transition-colors text-indigo-400">
                             Seller Panel
@@ -38,14 +44,16 @@ export default function Navbar() {
                 </div>
 
                 <div className="flex items-center space-x-4">
-                    <Link href="/cart">
-                        <Button variant="ghost" size="icon" className="text-slate-300 hover:text-white">
-                            <ShoppingCart className="h-5 w-5" />
-                        </Button>
-                    </Link>
+                    <CartDrawer />
 
                     {isAuthenticated ? (
-                        <div className="flex items-center space-x-4">
+                        <div className="flex items-center space-x-2">
+                            <Link href="/account/orders">
+                                <Button variant="ghost" size="sm" className="text-slate-300 hover:text-white hidden lg:flex">
+                                    <Package className="mr-2 h-4 w-4" />
+                                    Orders
+                                </Button>
+                            </Link>
                             <Link href="/profile">
                                 <Button variant="ghost" size="icon" className="text-slate-300 hover:text-white">
                                     <User className="h-5 w-5" />

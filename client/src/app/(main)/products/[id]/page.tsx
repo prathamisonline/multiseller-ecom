@@ -1,17 +1,24 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { productService } from '@/services/product.service';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Loader2, ShoppingCart, Zap, ShieldCheck, Truck, RefreshCcw, QrCode } from 'lucide-react';
 import { useState } from 'react';
+import { useCartStore } from '@/store/cartStore';
+import { useAuthStore } from '@/store/authStore';
+import { toast } from 'sonner';
 
 export default function ProductDetailPage() {
     const { id } = useParams();
+    const router = useRouter();
     const [quantity, setQuantity] = useState(1);
+    const [isAdding, setIsAdding] = useState(false);
+    const { addItem } = useCartStore();
+    const { isAuthenticated } = useAuthStore();
 
     const { data: productData, isLoading, error } = useQuery({
         queryKey: ['product', id],
@@ -42,6 +49,33 @@ export default function ProductDetailPage() {
     }
 
     const { product } = productData;
+
+    const handleAddToCart = async () => {
+        if (!isAuthenticated) {
+            toast.error('Please login to add items to cart');
+            router.push('/login');
+            return;
+        }
+
+        setIsAdding(true);
+        try {
+            await addItem(product.id, quantity);
+            toast.success(`${product.name} added to cart!`);
+        } catch (err) {
+            toast.error('Failed to add item to cart');
+        } finally {
+            setIsAdding(false);
+        }
+    };
+
+    const handleBuyNow = async () => {
+        if (!isAuthenticated) {
+            router.push('/login');
+            return;
+        }
+        await handleAddToCart();
+        router.push('/checkout');
+    };
 
     const features = [
         { icon: <ShieldCheck className="h-5 w-5 text-indigo-500" />, text: 'Genuine Product' },
@@ -117,7 +151,7 @@ export default function ProductDetailPage() {
                                 <span className="px-4 py-2 font-bold text-white">{quantity}</span>
                                 <button
                                     className="px-4 py-2 hover:bg-slate-800 text-white transition-colors"
-                                    onClick={() => setQuantity(q => q + 1)}
+                                    onClick={() => setQuantity(q => Math.min(product.stock, q + 1))}
                                     disabled={quantity >= product.stock}
                                 >
                                     +
@@ -127,11 +161,22 @@ export default function ProductDetailPage() {
                         </div>
 
                         <div className="flex flex-col sm:flex-row gap-4">
-                            <Button size="lg" className="flex-1 bg-indigo-600 hover:bg-indigo-700 h-14 text-lg">
-                                <ShoppingCart className="mr-2 h-5 w-5" />
+                            <Button
+                                size="lg"
+                                className="flex-1 bg-indigo-600 hover:bg-indigo-700 h-14 text-lg"
+                                onClick={handleAddToCart}
+                                disabled={isAdding || product.stock === 0}
+                            >
+                                {isAdding ? <Loader2 className="h-5 w-5 animate-spin mr-2" /> : <ShoppingCart className="mr-2 h-5 w-5" />}
                                 Add to Cart
                             </Button>
-                            <Button size="lg" variant="outline" className="flex-1 border-slate-800 hover:bg-slate-900 h-14 text-lg">
+                            <Button
+                                size="lg"
+                                variant="outline"
+                                className="flex-1 border-slate-800 hover:bg-slate-900 h-14 text-lg"
+                                onClick={handleBuyNow}
+                                disabled={isAdding || product.stock === 0}
+                            >
                                 <Zap className="mr-2 h-5 w-5 text-indigo-500" />
                                 Buy Now
                             </Button>

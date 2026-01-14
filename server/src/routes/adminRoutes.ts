@@ -11,6 +11,10 @@ import {
     getProductByIdAdmin,
     approveProduct,
     rejectProduct,
+    getAllUsers,
+    getUserByIdAdmin,
+    updateUserStatus,
+    deleteUser,
 } from '../controllers/adminController';
 import {
     getAllOrdersAdmin,
@@ -56,5 +60,21 @@ router.get('/orders', getAllOrdersAdmin);            // List all orders (with fi
 router.get('/orders/stats', getOrderStats);          // Get order statistics for dashboard
 router.get('/orders/:id', getOrderByIdAdmin);        // Get single order details
 router.put('/orders/:id/status', updateOrderStatusAdmin); // Update order status
+
+// ============================================
+// User Management Routes
+// ============================================
+router.get('/users', getAllUsers);
+router.get('/users/:id', getUserByIdAdmin);
+router.put('/users/:id/status', updateUserStatus);
+router.delete('/users/:id', deleteUser);
+
+// ============================================
+// Finance Routes
+// ============================================
+import { getFinanceStats, getPayouts } from '../controllers/financeController';
+
+router.get('/finance/stats', getFinanceStats);
+router.get('/finance/payouts', getPayouts);
 
 export default router;
