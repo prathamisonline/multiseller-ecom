@@ -106,7 +106,7 @@ export default function AdminProductsPage() {
                         const Icon = config.icon;
 
                         return (
-                            <div key={product.id} className="group p-6 rounded-3xl bg-slate-900/40 border border-slate-800 hover:border-slate-700 transition-all flex flex-col sm:flex-row gap-6">
+                            <div key={product._id} className="group p-6 rounded-3xl bg-slate-900/40 border border-slate-800 hover:border-slate-700 transition-all flex flex-col sm:flex-row gap-6">
                                 {/* Image Section */}
                                 <div className="w-full sm:w-48 h-64 sm:h-full relative rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden shrink-0">
                                     <img src={product.images[0]} alt="" className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-700" />
@@ -151,13 +151,13 @@ export default function AdminProductsPage() {
                                         {product.status === 'pending' ? (
                                             <>
                                                 <Button
-                                                    onClick={() => approveMutation.mutate(product.id)}
+                                                    onClick={() => approveMutation.mutate(product._id)}
                                                     className="flex-1 bg-emerald-600 hover:bg-emerald-700 h-12 font-black shadow-lg shadow-emerald-600/20"
                                                 >
                                                     Approve
                                                 </Button>
                                                 <Button
-                                                    onClick={() => rejectMutation.mutate(product.id)}
+                                                    onClick={() => rejectMutation.mutate(product._id)}
                                                     variant="destructive"
                                                     className="bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white border-red-500/20 h-12 font-bold"
                                                 >
