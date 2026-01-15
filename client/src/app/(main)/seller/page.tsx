@@ -32,35 +32,35 @@ export default function SellerDashboard() {
     const stats = [
         {
             label: 'Total Revenue',
-            value: `₹${overview?.data?.totalRevenue?.toLocaleString() || '0'}`,
+            value: `₹${overview?.revenue?.total?.toLocaleString() || '0'}`,
             icon: Wallet,
             color: 'text-green-500',
             trend: '+12.5%'
         },
         {
             label: 'Active Orders',
-            value: overview?.data?.totalOrders?.toString() || '0',
+            value: overview?.orders?.total?.toString() || '0',
             icon: ShoppingBag,
             color: 'text-indigo-500',
-            trend: overview?.data?.pendingOrders ? `+${overview?.data?.pendingOrders}` : '0'
+            trend: overview?.orders?.pending ? `+${overview?.orders?.pending}` : '0'
         },
         {
             label: 'Total Products',
-            value: overview?.data?.totalProducts?.toString() || '0',
+            value: overview?.products?.total?.toString() || '0',
             icon: Package,
             color: 'text-amber-500',
-            trend: overview?.data?.pendingProducts ? `${overview?.data?.pendingProducts} pending` : 'All live'
+            trend: overview?.products?.pending ? `${overview?.products?.pending} pending` : 'All live'
         },
         {
             label: 'Approved Products',
-            value: overview?.data?.approvedProducts?.toString() || '0',
+            value: overview?.products?.approved?.toString() || '0',
             icon: Package,
             color: 'text-blue-500',
             trend: 'Verified'
         },
     ];
 
-    const hasNoProducts = overview?.data?.totalProducts === 0;
+    const hasNoProducts = overview?.products?.total === 0;
 
     return (
         <div className="container mx-auto px-4 py-12 max-w-7xl">

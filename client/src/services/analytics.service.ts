@@ -34,7 +34,11 @@ export interface TopSeller {
 
 export const analyticsService = {
     // Seller Analytics
-    getSellerOverview: async (): Promise<{ success: boolean; data: any }> => {
+    getSellerOverview: async (): Promise<{
+        revenue: { total: number; today: number };
+        orders: { total: number; today: number; pending: number };
+        products: { total: number; approved: number; pending: number };
+    }> => {
         const response = await api.get('/analytics/seller/overview');
         return response.data.data || response.data;
     },
