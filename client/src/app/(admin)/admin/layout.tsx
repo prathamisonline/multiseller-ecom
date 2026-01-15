@@ -31,10 +31,24 @@ const sidebarItems = [
 ];
 
 import AdminMobileSidebar from '@/components/admin/AdminMobileSidebar';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
-    const logoutAdmin = useAuthStore((state) => state.logoutAdmin);
+    const { user, logoutAdmin } = useAuthStore();
+    const router = useRouter();
+
+    // Verify admin role
+    useEffect(() => {
+        if (user && user.role !== 'admin') {
+            router.push('/');
+        }
+    }, [user, router]);
+
+    if (!user || user.role !== 'admin') {
+        return null; // Or a loading spinner
+    }
 
     return (
         <div className="flex min-h-screen bg-slate-950">

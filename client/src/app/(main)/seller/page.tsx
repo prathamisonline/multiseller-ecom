@@ -14,7 +14,8 @@ import {
     Users,
     Wallet,
     Loader2,
-    LogOut
+    LogOut,
+    ShieldCheck
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -58,6 +59,8 @@ export default function SellerDashboard() {
             trend: 'Verified'
         },
     ];
+
+    const hasNoProducts = overview?.data?.totalProducts === 0;
 
     return (
         <div className="container mx-auto px-4 py-12 max-w-7xl">
@@ -164,6 +167,42 @@ export default function SellerDashboard() {
                         <p className="text-slate-600 font-bold mb-1">More Features Soon</p>
                         <p className="text-[10px] uppercase tracking-widest text-slate-700">Ad campaigns • Coupons • SEO Tools</p>
                     </div>
+
+                    {/* Getting Started Guide for New Sellers */}
+                    {hasNoProducts && (
+                        <div className="md:col-span-2 p-8 rounded-3xl bg-indigo-600/5 border border-indigo-500/20">
+                            <h3 className="text-xl font-black text-white mb-6 flex items-center gap-3">
+                                <ShieldCheck className="w-6 h-6 text-indigo-500" />
+                                Getting Started Guide
+                            </h3>
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                                <div className="space-y-3">
+                                    <div className="h-8 w-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm">1</div>
+                                    <h4 className="font-bold text-white">Add Products</h4>
+                                    <p className="text-xs text-slate-500 leading-relaxed">Upload your first product with high-quality images and clear descriptions.</p>
+                                    <Button variant="link" className="text-indigo-500 p-0 h-auto text-xs" asChild>
+                                        <Link href="/seller/products/new">Add Product →</Link>
+                                    </Button>
+                                </div>
+                                <div className="space-y-3">
+                                    <div className="h-8 w-8 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center font-bold text-sm">2</div>
+                                    <h4 className="font-bold text-white">Setup Profile</h4>
+                                    <p className="text-xs text-slate-500 leading-relaxed">Customize your store name, logo, and brand story to build customer trust.</p>
+                                    <Button variant="link" className="text-slate-500 p-0 h-auto text-xs" asChild>
+                                        <Link href="/seller/settings">Edit Profile →</Link>
+                                    </Button>
+                                </div>
+                                <div className="space-y-3">
+                                    <div className="h-8 w-8 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center font-bold text-sm">3</div>
+                                    <h4 className="font-bold text-white">Manage Orders</h4>
+                                    <p className="text-xs text-slate-500 leading-relaxed">Once you receive orders, you'll process them here for fulfillment.</p>
+                                    <Button variant="link" className="text-slate-500 p-0 h-auto text-xs disabled" asChild>
+                                        <span className="opacity-50">Wait for sales →</span>
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 {/* Recent Activity / Sidebar info */}

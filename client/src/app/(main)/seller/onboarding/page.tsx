@@ -1,13 +1,59 @@
 'use client';
 
 import OnboardingForm from '@/components/seller/OnboardingForm';
-import { Store, Info, LogIn } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
+import { useSellerStore } from '@/store/sellerStore';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { Store, Info, LogIn, Clock, ShieldAlert } from 'lucide-react';
 
 export default function SellerOnboardingPage() {
     const { isAuthenticated, user } = useAuthStore();
+    const { hasSeller, isSellerApproved, sellerStatus } = useSellerStore();
+    const router = useRouter();
+
+    if (isAuthenticated && (isSellerApproved || user?.role === 'seller')) {
+        return (
+            <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
+                <div className="max-w-md w-full bg-slate-900/40 border border-slate-800 p-10 rounded-3xl text-center space-y-6 backdrop-blur-xl">
+                    <div className="w-16 h-16 rounded-2xl bg-indigo-600/20 flex items-center justify-center mx-auto">
+                        <ShieldAlert className="w-8 h-8 text-indigo-400" />
+                    </div>
+                    <div className="space-y-2">
+                        <h2 className="text-2xl font-black text-white">Already a Seller</h2>
+                        <p className="text-slate-400">
+                            Your seller account is active! You can now manage your products, view orders, and track your performance.
+                        </p>
+                    </div>
+                    <Button className="w-full bg-indigo-600 hover:bg-indigo-700 h-12 font-bold" asChild>
+                        <Link href="/seller">Go to Seller Dashboard</Link>
+                    </Button>
+                </div>
+            </div>
+        );
+    }
+
+    if (isAuthenticated && hasSeller && sellerStatus === 'pending') {
+        return (
+            <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
+                <div className="max-w-md w-full bg-slate-900/40 border border-slate-800 p-10 rounded-3xl text-center space-y-6 backdrop-blur-xl">
+                    <div className="w-16 h-16 rounded-2xl bg-amber-600/20 flex items-center justify-center mx-auto text-amber-500">
+                        <Clock className="w-8 h-8 animate-pulse" />
+                    </div>
+                    <div className="space-y-2">
+                        <h2 className="text-2xl font-black text-white">Application Pending</h2>
+                        <p className="text-slate-400">
+                            We've received your application. Our team is currently reviewing your details. This usually takes 24-48 hours.
+                        </p>
+                    </div>
+                    <Button variant="outline" className="w-full border-slate-800 hover:bg-slate-900 h-12 font-bold" asChild>
+                        <Link href="/">Return to Shop</Link>
+                    </Button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-slate-950 pt-20 pb-32">

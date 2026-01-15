@@ -16,6 +16,7 @@ export default function Navbar() {
         if (user?.role === 'admin') {
             logoutAdmin();
         } else if (user?.role === 'seller' || hasSeller) {
+            useSellerStore.getState().clearSellerProfile();
             logoutSeller();
         } else {
             logoutUser();
@@ -43,8 +44,8 @@ export default function Navbar() {
                     {/* Seller Navigation Logic */}
                     {isAuthenticated && (
                         <>
-                            {/* Show "Become a Seller" if they don't have any seller profile */}
-                            {!hasSeller && (
+                            {/* Show "Become a Seller" if they don't have any seller profile and aren't a seller */}
+                            {!hasSeller && user?.role !== 'seller' && (
                                 <Link
                                     href="/seller/onboarding"
                                     className="hover:text-amber-400 transition-colors text-amber-500 font-bold flex items-center gap-2"
@@ -54,19 +55,8 @@ export default function Navbar() {
                                 </Link>
                             )}
 
-                            {/* Show "Application Pending" if seller profile exists but not approved */}
-                            {hasSeller && sellerStatus === 'pending' && (
-                                <Link
-                                    href="/seller/pending"
-                                    className="hover:text-amber-400 transition-colors text-amber-500 font-semibold flex items-center gap-2"
-                                >
-                                    <Clock className="w-4 h-4 animate-pulse" />
-                                    Application Pending
-                                </Link>
-                            )}
-
-                            {/* Show "Seller Dashboard" if approved */}
-                            {isSellerApproved && (
+                            {/* Show "Seller Dashboard" if approved or already a seller role */}
+                            {(isSellerApproved || user?.role === 'seller') && (
                                 <Link
                                     href="/seller"
                                     className="hover:text-indigo-400 transition-colors text-indigo-400 font-semibold flex items-center gap-2"
