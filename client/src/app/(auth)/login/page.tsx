@@ -49,11 +49,11 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-slate-950 px-4">
-            <Card className="w-full max-w-md border-slate-800 bg-slate-900/50 backdrop-blur-xl">
+        <div className="flex min-h-screen items-center justify-center bg-background px-4">
+            <Card className="w-full max-w-md border-border bg-card/50 backdrop-blur-xl">
                 <CardHeader className="space-y-1">
-                    <CardTitle className="text-2xl font-bold text-white">Login</CardTitle>
-                    <CardDescription className="text-slate-400">
+                    <CardTitle className="text-2xl font-bold text-foreground">Login</CardTitle>
+                    <CardDescription className="text-muted-foreground">
                         Enter your email to access your account
                     </CardDescription>
                 </CardHeader>
@@ -65,14 +65,14 @@ export default function LoginPage() {
                             </div>
                         )}
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-slate-200" htmlFor="email">
+                            <label className="text-sm font-medium text-foreground" htmlFor="email">
                                 Email
                             </label>
                             <Input
                                 id="email"
                                 placeholder="m@example.com"
                                 type="email"
-                                className="border-slate-800 bg-slate-950 text-white focus:ring-indigo-500"
+                                className="border-border bg-background text-foreground focus:ring-indigo-500"
                                 {...register('email')}
                             />
                             {errors.email && (
@@ -81,7 +81,7 @@ export default function LoginPage() {
                         </div>
                         <div className="space-y-2">
                             <div className="flex items-center justify-between">
-                                <label className="text-sm font-medium text-slate-200" htmlFor="password">
+                                <label className="text-sm font-medium text-foreground" htmlFor="password">
                                     Password
                                 </label>
                                 <Link
@@ -94,7 +94,7 @@ export default function LoginPage() {
                             <Input
                                 id="password"
                                 type="password"
-                                className="border-slate-800 bg-slate-950 text-white focus:ring-indigo-500"
+                                className="border-border bg-background text-foreground focus:ring-indigo-500"
                                 {...register('password')}
                             />
                             {errors.password && (
@@ -117,13 +117,13 @@ export default function LoginPage() {
                                 'Login'
                             )}
                         </Button>
-                        <div className="text-center text-sm text-slate-400">
+                        <div className="text-center text-sm text-muted-foreground">
                             Don&apos;t have an account?{' '}
                             <Link href="/register" className="text-indigo-400 hover:text-indigo-300">
                                 Register
                             </Link>
                         </div>
-                        <div className="text-center text-sm text-slate-500">
+                        <div className="text-center text-sm text-muted-foreground">
                             Looking for{' '}
                             <Link href="/admin-login" className="text-purple-400 hover:text-purple-300">
                                 Admin Portal

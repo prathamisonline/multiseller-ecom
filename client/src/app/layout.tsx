@@ -5,6 +5,7 @@ import Navbar from '@/components/shared/Navbar';
 import QueryProvider from '@/components/shared/QueryProvider';
 import ErrorBoundary from '@/components/shared/ErrorBoundary';
 import SellerSyncProvider from '@/components/shared/SellerSyncProvider';
+import { ThemeProvider } from '@/components/shared/ThemeProvider';
 import { Toaster } from 'sonner';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -34,14 +35,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body className={`${inter.className} bg-slate-950 text-slate-50 antialiased`}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.className} bg-background text-foreground antialiased`}>
         <ErrorBoundary>
           <QueryProvider>
             <SellerSyncProvider>
-              <Toaster position="bottom-right" theme="dark" richColors />
-              <Navbar />
-              <main className="min-h-screen">{children}</main>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+              >
+                <Toaster position="bottom-right" theme="system" richColors />
+                <Navbar />
+                <main className="min-h-screen">{children}</main>
+              </ThemeProvider>
             </SellerSyncProvider>
           </QueryProvider>
         </ErrorBoundary>

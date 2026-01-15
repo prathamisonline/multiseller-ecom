@@ -31,7 +31,7 @@ export default function CartDrawer() {
     return (
         <Sheet>
             <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="relative text-slate-300 hover:text-white">
+                <Button variant="ghost" size="icon" className="relative text-muted-foreground hover:text-foreground">
                     <ShoppingCart className="h-5 w-5" />
                     {totalQuantity > 0 && (
                         <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white">
@@ -40,23 +40,23 @@ export default function CartDrawer() {
                     )}
                 </Button>
             </SheetTrigger>
-            <SheetContent className="flex w-full flex-col border-slate-800 bg-slate-950/95 p-0 text-white sm:max-w-md">
+            <SheetContent className="flex w-full flex-col border-border bg-background/95 p-0 text-foreground sm:max-w-md">
                 <SheetHeader className="p-6">
-                    <SheetTitle className="flex items-center gap-2 text-white">
+                    <SheetTitle className="flex items-center gap-2 text-foreground">
                         <ShoppingCart className="h-5 w-5" />
                         Your Cart ({totalQuantity})
                     </SheetTitle>
                 </SheetHeader>
 
-                <Separator className="bg-slate-800" />
+                <Separator className="bg-border" />
 
                 {items.length === 0 ? (
                     <div className="flex flex-1 flex-col items-center justify-center space-y-4 p-6">
-                        <div className="rounded-full bg-slate-900 p-6">
-                            <ShoppingCart className="h-12 w-12 text-slate-700" />
+                        <div className="rounded-full bg-muted p-6">
+                            <ShoppingCart className="h-12 w-12 text-muted-foreground" />
                         </div>
-                        <h3 className="text-xl font-semibold text-white">Your cart is empty</h3>
-                        <p className="text-center text-sm text-slate-400">
+                        <h3 className="text-xl font-semibold text-foreground">Your cart is empty</h3>
+                        <p className="text-center text-sm text-muted-foreground">
                             Looks like you haven&apos;t added anything to your cart yet.
                         </p>
                         <SheetTrigger asChild>
@@ -71,7 +71,7 @@ export default function CartDrawer() {
                             <div className="space-y-6 py-6">
                                 {items.map((item) => (
                                     <div key={item.productId} className="flex gap-4">
-                                        <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-slate-900 border border-slate-800">
+                                        <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-muted border border-border">
                                             {item.product.images?.[0] ? (
                                                 <Image
                                                     src={item.product.images[0]}
@@ -80,7 +80,7 @@ export default function CartDrawer() {
                                                     className="object-cover"
                                                 />
                                             ) : (
-                                                <div className="flex h-full w-full items-center justify-center text-[10px] text-slate-600 uppercase">No Img</div>
+                                                <div className="flex h-full w-full items-center justify-center text-[10px] text-muted-foreground uppercase">No Img</div>
                                             )}
                                         </div>
 
@@ -88,32 +88,32 @@ export default function CartDrawer() {
                                             <div className="space-y-1">
                                                 <Link
                                                     href={`/products/${item.productId}`}
-                                                    className="line-clamp-1 text-sm font-semibold text-white hover:text-indigo-400"
+                                                    className="line-clamp-1 text-sm font-semibold text-foreground hover:text-indigo-400"
                                                 >
                                                     {item.product.name}
                                                 </Link>
-                                                <p className="text-xs text-slate-400 uppercase tracking-tighter">{item.product.category}</p>
+                                                <p className="text-xs text-muted-foreground uppercase tracking-tighter">{item.product.category}</p>
                                             </div>
 
                                             <div className="flex items-center justify-between">
-                                                <div className="flex items-center rounded-md border border-slate-800 bg-slate-900 h-8">
+                                                <div className="flex items-center rounded-md border border-border bg-muted h-8">
                                                     <button
                                                         onClick={() => updateQuantity(item.productId, item.quantity - 1)}
-                                                        className="flex h-full w-8 items-center justify-center hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
+                                                        className="flex h-full w-8 items-center justify-center hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors"
                                                         disabled={isLoading}
                                                     >
                                                         <Minus className="h-3 w-3" />
                                                     </button>
-                                                    <span className="w-8 text-center text-xs font-bold text-white">{item.quantity}</span>
+                                                    <span className="w-8 text-center text-xs font-bold text-foreground">{item.quantity}</span>
                                                     <button
                                                         onClick={() => updateQuantity(item.productId, item.quantity + 1)}
-                                                        className="flex h-full w-8 items-center justify-center hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
+                                                        className="flex h-full w-8 items-center justify-center hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors"
                                                         disabled={isLoading || item.quantity >= item.product.stock}
                                                     >
                                                         <Plus className="h-3 w-3" />
                                                     </button>
                                                 </div>
-                                                <p className="text-sm font-bold text-white">₹{(item.product.price * item.quantity).toLocaleString()}</p>
+                                                <p className="text-sm font-bold text-foreground">₹{(item.product.price * item.quantity).toLocaleString()}</p>
                                             </div>
                                         </div>
 
@@ -129,21 +129,21 @@ export default function CartDrawer() {
                             </div>
                         </ScrollArea>
 
-                        <Separator className="bg-slate-800" />
+                        <Separator className="bg-border" />
 
-                        <div className="space-y-4 p-6 bg-slate-900/40">
+                        <div className="space-y-4 p-6 bg-muted/40">
                             <div className="space-y-2">
                                 <div className="flex justify-between text-sm">
-                                    <span className="text-slate-400">Subtotal</span>
-                                    <span className="font-medium text-white">₹{totalAmount.toLocaleString()}</span>
+                                    <span className="text-muted-foreground">Subtotal</span>
+                                    <span className="font-medium text-foreground">₹{totalAmount.toLocaleString()}</span>
                                 </div>
                                 <div className="flex justify-between text-sm">
-                                    <span className="text-slate-400">Shipping</span>
+                                    <span className="text-muted-foreground">Shipping</span>
                                     <span className="text-green-500 font-medium">Free</span>
                                 </div>
-                                <Separator className="bg-slate-800 my-2" />
+                                <Separator className="bg-border my-2" />
                                 <div className="flex justify-between text-lg font-bold">
-                                    <span className="text-white">Total</span>
+                                    <span className="text-foreground">Total</span>
                                     <span className="text-indigo-500">₹{totalAmount.toLocaleString()}</span>
                                 </div>
                             </div>
@@ -156,7 +156,7 @@ export default function CartDrawer() {
                                     </Button>
                                 </Link>
                             </SheetTrigger>
-                            <p className="text-center text-[10px] text-slate-500 uppercase tracking-widest">
+                            <p className="text-center text-[10px] text-muted-foreground uppercase tracking-widest">
                                 Secure SSL Encrypted Checkout
                             </p>
                         </div>

@@ -6,6 +6,7 @@ import { useSellerStore } from '@/store/sellerStore';
 import { Button } from '@/components/ui/button';
 import { User, LogOut, Store, Package, Clock, ShieldAlert, Settings } from 'lucide-react';
 import CartDrawer from './CartDrawer';
+import { ThemeToggle } from './ThemeToggle';
 
 export default function Navbar() {
     const { user, isAuthenticated, logout, logoutAdmin, logoutSeller, logoutUser } = useAuthStore();
@@ -24,7 +25,7 @@ export default function Navbar() {
     };
 
     return (
-        <nav className="sticky top-0 z-50 w-full border-b border-slate-800 bg-slate-950/80 backdrop-blur-md">
+        <nav className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-md">
             <div className="container mx-auto flex h-16 items-center justify-between px-4">
                 <Link href="/" className="flex items-center space-x-2">
                     <div className="h-8 w-8 rounded-lg bg-indigo-600 flex items-center justify-center">
@@ -33,7 +34,7 @@ export default function Navbar() {
                     <span className="text-xl font-bold tracking-tight text-white">Shoplivedeals</span>
                 </Link>
 
-                <div className="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
+                <div className="hidden md:flex items-center space-x-8 text-sm font-medium text-muted-foreground">
                     <Link href="/products" className="hover:text-indigo-400 transition-colors">
                         Shop
                     </Link>
@@ -92,23 +93,24 @@ export default function Navbar() {
                 </div>
 
                 <div className="flex items-center space-x-4">
+                    <ThemeToggle />
                     <CartDrawer />
 
                     {isAuthenticated ? (
                         <div className="flex items-center space-x-2">
                             {/* User name - visible on larger screens */}
-                            <span className="hidden md:block text-slate-300 text-sm font-medium">
+                            <span className="hidden md:block text-muted-foreground text-sm font-medium">
                                 Hello, {user?.name?.split(' ')[0] || 'User'}
                             </span>
 
                             <Link href="/account/orders">
-                                <Button variant="ghost" size="sm" className="text-slate-300 hover:text-white hidden lg:flex">
+                                <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground hidden lg:flex">
                                     <Package className="mr-2 h-4 w-4" />
                                     Orders
                                 </Button>
                             </Link>
                             <Link href="/profile">
-                                <Button variant="ghost" size="icon" className="text-slate-300 hover:text-white" title="Profile">
+                                <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground" title="Profile">
                                     <User className="h-5 w-5" />
                                 </Button>
                             </Link>

@@ -51,7 +51,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             whileHover={{ y: -5 }}
-            className="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/50 backdrop-blur-sm transition-all hover:border-indigo-500/50"
+            className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card/50 backdrop-blur-sm transition-all hover:border-indigo-500/50"
         >
             <Link href={`/products/${product.id}`} className="relative aspect-square overflow-hidden">
                 {product.images?.[0] ? (
@@ -62,7 +62,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                         className="object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                 ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-slate-800 text-slate-500">
+                    <div className="flex h-full w-full items-center justify-center bg-muted text-muted-foreground">
                         No Image
                     </div>
                 )}
@@ -73,7 +73,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                     </Badge>
                 )}
 
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100 flex items-center justify-center gap-3">
+                <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100 flex items-center justify-center gap-3">
                     <Link href={`/products/${product.id}`}>
                         <Button size="sm" className="bg-white text-slate-950 hover:bg-slate-200 rounded-full h-10 w-10 p-0">
                             <Eye className="h-5 w-5" />
@@ -93,19 +93,19 @@ export default function ProductCard({ product }: ProductCardProps) {
             <div className="flex flex-1 flex-col p-4">
                 <div className="mb-1 flex items-center justify-between">
                     <span className="text-xs font-medium text-indigo-400 uppercase tracking-wider">{product.category}</span>
-                    <span className={`text-xs ${product.stock > 0 ? 'text-slate-500' : 'text-red-500'}`}>
+                    <span className={`text-xs ${product.stock > 0 ? 'text-muted-foreground' : 'text-red-500'}`}>
                         {product.stock > 0 ? `${product.stock} in stock` : 'Out of Stock'}
                     </span>
                 </div>
 
                 <Link href={`/products/${product.id}`} className="group-hover:text-indigo-400 transition-colors">
-                    <h3 className="line-clamp-1 font-semibold text-slate-200">{product.name}</h3>
+                    <h3 className="line-clamp-1 font-semibold text-foreground">{product.name}</h3>
                 </Link>
 
                 <div className="mt-2 flex items-baseline gap-2">
-                    <span className="text-lg font-bold text-white">₹{product.price.toLocaleString()}</span>
+                    <span className="text-lg font-bold text-foreground">₹{product.price.toLocaleString()}</span>
                     {product.mrp > product.price && (
-                        <span className="text-sm text-slate-500 line-through">₹{product.mrp.toLocaleString()}</span>
+                        <span className="text-sm text-muted-foreground line-through">₹{product.mrp.toLocaleString()}</span>
                     )}
                 </div>
             </div>
