@@ -66,7 +66,7 @@ export default function AdminUsersPage() {
         }
     });
 
-    const users = data?.data?.users || [];
+    const users = data?.users || [];
     const filteredUsers = users.filter((u: any) =>
         u.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         u.email.toLowerCase().includes(searchQuery.toLowerCase())

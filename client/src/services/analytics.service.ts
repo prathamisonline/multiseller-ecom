@@ -36,42 +36,42 @@ export const analyticsService = {
     // Seller Analytics
     getSellerOverview: async (): Promise<{ success: boolean; data: any }> => {
         const response = await api.get('/analytics/seller/overview');
-        return response.data;
+        return response.data.data || response.data;
     },
 
     getSellerRevenue: async (days: number = 7): Promise<{ success: boolean; data: any }> => {
         const response = await api.get(`/analytics/seller/revenue?days=${days}`);
-        return response.data;
+        return response.data.data || response.data;
     },
 
     getSellerTopProducts: async (limit: number = 5): Promise<{ success: boolean; data: TopProduct[] }> => {
         const response = await api.get(`/analytics/seller/products/top?limit=${limit}`);
-        return response.data;
+        return response.data.data || response.data;
     },
 
     // Admin Analytics
     getAdminOverview: async (): Promise<{ success: boolean; data: any }> => {
         const response = await api.get('/analytics/admin/overview');
-        return response.data;
+        return response.data.data || response.data;
     },
 
     getAdminRevenue: async (period: string = 'daily', days: number = 30): Promise<{ success: boolean; data: any }> => {
         const response = await api.get(`/analytics/admin/revenue?period=${period}&days=${days}`);
-        return response.data;
+        return response.data.data || response.data;
     },
 
     getAdminOrderStatus: async (): Promise<{ success: boolean; data: Record<string, number> }> => {
         const response = await api.get('/analytics/admin/orders/status');
-        return response.data;
+        return response.data.data || response.data;
     },
 
     getAdminTopProducts: async (limit: number = 5): Promise<{ success: boolean; data: TopProduct[] }> => {
         const response = await api.get('/analytics/admin/products/top', { params: { limit } });
-        return response.data;
+        return response.data.data || response.data;
     },
 
     getAdminTopSellers: async (limit: number = 5): Promise<{ success: boolean; data: TopSeller[] }> => {
         const response = await api.get('/analytics/admin/sellers/top', { params: { limit } });
-        return response.data;
+        return response.data.data || response.data;
     },
 };

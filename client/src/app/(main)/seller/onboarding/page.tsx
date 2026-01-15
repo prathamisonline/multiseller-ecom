@@ -1,7 +1,14 @@
+'use client';
+
 import OnboardingForm from '@/components/seller/OnboardingForm';
-import { Store } from 'lucide-react';
+import { Store, Info, LogIn } from 'lucide-react';
+import { useAuthStore } from '@/store/authStore';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export default function SellerOnboardingPage() {
+    const { isAuthenticated, user } = useAuthStore();
+
     return (
         <div className="min-h-screen bg-slate-950 pt-20 pb-32">
             <div className="container mx-auto px-4">
@@ -20,8 +27,61 @@ export default function SellerOnboardingPage() {
                     </p>
                 </div>
 
-                {/* Form Section */}
-                <OnboardingForm />
+                {/* Info Banner - Explaining the system */}
+                <div className="max-w-3xl mx-auto mb-8">
+                    <div className="p-6 rounded-2xl bg-blue-600/10 border border-blue-500/20 flex gap-4">
+                        <Info className="w-6 h-6 text-blue-400 shrink-0 mt-0.5" />
+                        <div className="space-y-2">
+                            <h3 className="text-blue-300 font-semibold">One Account, Dual Benefits</h3>
+                            <p className="text-sm text-slate-400 leading-relaxed">
+                                You don't need a separate account to become a seller! Use your existing account to both <strong className="text-slate-300">shop as a customer</strong> and <strong className="text-slate-300">sell as a vendor</strong>. No need to logout or create multiple accounts.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Authentication Check */}
+                {!isAuthenticated ? (
+                    <div className="max-w-3xl mx-auto">
+                        <div className="bg-slate-900/40 border border-slate-800 p-12 rounded-3xl backdrop-blur-sm shadow-2xl text-center space-y-6">
+                            <div className="w-16 h-16 rounded-full bg-indigo-600/20 flex items-center justify-center mx-auto">
+                                <LogIn className="w-8 h-8 text-indigo-400" />
+                            </div>
+                            <div className="space-y-3">
+                                <h2 className="text-2xl font-bold text-white">Login Required</h2>
+                                <p className="text-slate-400 max-w-md mx-auto">
+                                    To become a seller, you need to be logged in. If you don't have an account yet, create one first - you'll be able to shop and sell with the same account!
+                                </p>
+                            </div>
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+                                <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700" asChild>
+                                    <Link href="/login">
+                                        <LogIn className="mr-2 h-5 w-5" />
+                                        Login
+                                    </Link>
+                                </Button>
+                                <Button size="lg" variant="outline" className="border-slate-800 hover:bg-slate-900" asChild>
+                                    <Link href="/register">
+                                        Create Account
+                                    </Link>
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                ) : (
+                    <>
+                        {/* Welcome Message for Logged In Users */}
+                        <div className="max-w-3xl mx-auto mb-8 text-center">
+                            <p className="text-slate-400">
+                                Welcome back, <span className="text-indigo-400 font-semibold">{user?.name}</span>! 👋 <br />
+                                <span className="text-sm">Complete the form below to start your seller journey.</span>
+                            </p>
+                        </div>
+
+                        {/* Form Section */}
+                        <OnboardingForm />
+                    </>
+                )}
 
                 {/* Features Grid */}
                 <div className="max-w-5xl mx-auto mt-32 grid grid-cols-1 md:grid-cols-3 gap-8">

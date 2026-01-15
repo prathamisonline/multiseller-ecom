@@ -28,6 +28,7 @@ import {
     FormDescription,
 } from '@/components/ui/form';
 import { sellerService } from '@/services/seller.service';
+import { useSellerStore } from '@/store/sellerStore';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
@@ -59,6 +60,7 @@ export default function OnboardingForm() {
     const [currentStep, setCurrentStep] = useState(1);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
+    const { setSellerProfile } = useSellerStore();
 
     const form = useForm<OnboardingValues>({
         resolver: zodResolver(onboardingSchema),
@@ -104,7 +106,13 @@ export default function OnboardingForm() {
                 },
             };
 
-            await sellerService.apply(payload);
+            const response = await sellerService.apply(payload);
+
+            // Update seller store with the new profile
+            if (response.success && response.data) {
+                setSellerProfile(response.data);
+            }
+
             toast.success('Application submitted successfully! Our team will review it.');
             router.push('/seller/pending');
         } catch (error: any) {

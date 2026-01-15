@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
@@ -35,13 +36,13 @@ export default function AdminOverview() {
         );
     }
 
-    const overview = stats?.data || {};
+    const overview = stats || {};
 
     const statCards = [
-        { label: 'Total Revenue', value: `₹${(overview.totalRevenue || 0).toLocaleString()}`, icon: Wallet, color: 'text-emerald-500', trend: '+12.5%' },
-        { label: 'System Orders', value: overview.totalOrders || 0, icon: ShoppingBag, color: 'text-indigo-500', trend: overview.todayOrders ? `+${overview.todayOrders}` : '0' },
-        { label: 'Platform Users', value: overview.userCounts?.total || 0, icon: Users, color: 'text-blue-500', trend: 'Healthy' },
-        { label: 'Active Sellers', value: overview.sellerCounts?.approved || 0, icon: ShieldCheck, color: 'text-amber-500', trend: overview.sellerCounts?.pending ? `${overview.sellerCounts.pending} pending` : 'Verified' },
+        { label: 'Total Revenue', value: `₹${(overview.revenue?.total || 0).toLocaleString()}`, icon: Wallet, color: 'text-emerald-500', trend: '+12.5%' },
+        { label: 'System Orders', value: overview.orders?.total || 0, icon: ShoppingBag, color: 'text-indigo-500', trend: overview.orders?.today ? `+${overview.orders.today}` : '0' },
+        { label: 'Platform Users', value: overview.users?.total || 0, icon: Users, color: 'text-blue-500', trend: 'Healthy' },
+        { label: 'Active Sellers', value: overview.sellers?.total || 0, icon: ShieldCheck, color: 'text-amber-500', trend: overview.sellers?.pending ? `${overview.sellers.pending} pending` : 'Verified' },
     ];
 
     return (
@@ -102,7 +103,7 @@ export default function AdminOverview() {
                             <CardContent className="pt-6">
                                 <div className="flex items-end justify-between">
                                     <div>
-                                        <p className="text-4xl font-black text-white">{overview.sellerCounts?.pending || 0}</p>
+                                        <p className="text-4xl font-black text-white">{overview.sellers?.pending || 0}</p>
                                         <p className="text-[10px] uppercase font-bold text-slate-500 tracking-widest">Pending Applications</p>
                                     </div>
                                     <Link href="/admin/sellers">
@@ -129,7 +130,7 @@ export default function AdminOverview() {
                             <CardContent className="pt-6">
                                 <div className="flex items-end justify-between">
                                     <div>
-                                        <p className="text-4xl font-black text-white">{overview.productCounts?.pending || 0}</p>
+                                        <p className="text-4xl font-black text-white">{overview.products?.pending || 0}</p>
                                         <p className="text-[10px] uppercase font-bold text-slate-500 tracking-widest">Awaiting Verification</p>
                                     </div>
                                     <Link href="/admin/products">

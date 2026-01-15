@@ -19,11 +19,16 @@ export interface SellerApplicationData {
 export const sellerService = {
     apply: async (data: SellerApplicationData): Promise<{ success: boolean; data: Seller }> => {
         const response = await api.post('/sellers/apply', data);
-        return response.data;
+        return response.data.data || response.data;
     },
 
     getProfile: async (): Promise<{ success: boolean; data: Seller }> => {
         const response = await api.get('/sellers/me');
-        return response.data;
+        return response.data.data || response.data;
+    },
+
+    getMySellerProfile: async (): Promise<{ success: boolean; data: Seller }> => {
+        const response = await api.get('/sellers/me');
+        return response.data.data || response.data;
     },
 };

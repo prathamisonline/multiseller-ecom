@@ -2,12 +2,25 @@
 
 import Link from 'next/link';
 import { useAuthStore } from '@/store/authStore';
+import { useSellerStore } from '@/store/sellerStore';
 import { Button } from '@/components/ui/button';
-import { User, LogOut, Store, Package } from 'lucide-react';
+import { User, LogOut, Store, Package, Clock, ShieldAlert, Settings } from 'lucide-react';
 import CartDrawer from './CartDrawer';
 
 export default function Navbar() {
-    const { user, isAuthenticated, logout } = useAuthStore();
+    const { user, isAuthenticated, logout, logoutAdmin, logoutSeller, logoutUser } = useAuthStore();
+    const { sellerStatus, isSellerApproved, hasSeller } = useSellerStore();
+
+    // Determine which logout function to use based on user role
+    const handleLogout = () => {
+        if (user?.role === 'admin') {
+            logoutAdmin();
+        } else if (user?.role === 'seller' || hasSeller) {
+            logoutSeller();
+        } else {
+            logoutUser();
+        }
+    };
 
     return (
         <nav className="sticky top-0 z-50 w-full border-b border-slate-800 bg-slate-950/80 backdrop-blur-md">
@@ -26,18 +39,63 @@ export default function Navbar() {
                     <Link href="/categories" className="hover:text-indigo-400 transition-colors">
                         Categories
                     </Link>
-                    {isAuthenticated && user?.role === 'user' && (
-                        <Link href="/seller/onboarding" className="hover:text-amber-400 transition-colors text-amber-500 font-bold">
-                            Become a Seller
-                        </Link>
+
+                    {/* Seller Navigation Logic */}
+                    {isAuthenticated && (
+                        <>
+                            {/* Show "Become a Seller" if they don't have any seller profile */}
+                            {!hasSeller && (
+                                <Link
+                                    href="/seller/onboarding"
+                                    className="hover:text-amber-400 transition-colors text-amber-500 font-bold flex items-center gap-2"
+                                >
+                                    <Store className="w-4 h-4" />
+                                    Become a Seller
+                                </Link>
+                            )}
+
+                            {/* Show "Application Pending" if seller profile exists but not approved */}
+                            {hasSeller && sellerStatus === 'pending' && (
+                                <Link
+                                    href="/seller/pending"
+                                    className="hover:text-amber-400 transition-colors text-amber-500 font-semibold flex items-center gap-2"
+                                >
+                                    <Clock className="w-4 h-4 animate-pulse" />
+                                    Application Pending
+                                </Link>
+                            )}
+
+                            {/* Show "Seller Dashboard" if approved */}
+                            {isSellerApproved && (
+                                <Link
+                                    href="/seller"
+                                    className="hover:text-indigo-400 transition-colors text-indigo-400 font-semibold flex items-center gap-2"
+                                >
+                                    <Store className="w-4 h-4" />
+                                    Seller Dashboard
+                                </Link>
+                            )}
+
+                            {/* Show "Application Rejected" if rejected */}
+                            {hasSeller && sellerStatus === 'rejected' && (
+                                <Link
+                                    href="/seller/rejected"
+                                    className="hover:text-red-400 transition-colors text-red-500 font-semibold flex items-center gap-2"
+                                >
+                                    <ShieldAlert className="w-4 h-4" />
+                                    Application Rejected
+                                </Link>
+                            )}
+                        </>
                     )}
-                    {user?.role === 'seller' && (
-                        <Link href="/seller" className="hover:text-indigo-400 transition-colors text-indigo-400">
-                            Seller Panel
-                        </Link>
-                    )}
+
+                    {/* Admin Panel */}
                     {user?.role === 'admin' && (
-                        <Link href="/admin" className="hover:text-indigo-400 transition-colors text-indigo-400">
+                        <Link
+                            href="/admin"
+                            className="hover:text-purple-400 transition-colors text-purple-400 font-semibold flex items-center gap-2"
+                        >
+                            <Settings className="w-4 h-4" />
                             Admin Panel
                         </Link>
                     )}
@@ -48,6 +106,11 @@ export default function Navbar() {
 
                     {isAuthenticated ? (
                         <div className="flex items-center space-x-2">
+                            {/* User name - visible on larger screens */}
+                            <span className="hidden md:block text-slate-300 text-sm font-medium">
+                                Hello, {user?.name?.split(' ')[0] || 'User'}
+                            </span>
+
                             <Link href="/account/orders">
                                 <Button variant="ghost" size="sm" className="text-slate-300 hover:text-white hidden lg:flex">
                                     <Package className="mr-2 h-4 w-4" />
@@ -55,15 +118,27 @@ export default function Navbar() {
                                 </Button>
                             </Link>
                             <Link href="/profile">
-                                <Button variant="ghost" size="icon" className="text-slate-300 hover:text-white">
+                                <Button variant="ghost" size="icon" className="text-slate-300 hover:text-white" title="Profile">
                                     <User className="h-5 w-5" />
                                 </Button>
                             </Link>
                             <Button
                                 variant="ghost"
+                                size="sm"
+                                onClick={handleLogout}
+                                className="text-slate-300 hover:text-red-400 hidden sm:flex"
+                                title="Logout"
+                            >
+                                <LogOut className="mr-2 h-4 w-4" />
+                                Logout
+                            </Button>
+                            {/* Mobile logout icon */}
+                            <Button
+                                variant="ghost"
                                 size="icon"
-                                onClick={logout}
-                                className="text-slate-300 hover:text-red-400"
+                                onClick={handleLogout}
+                                className="text-slate-300 hover:text-red-400 sm:hidden"
+                                title="Logout"
                             >
                                 <LogOut className="h-5 w-5" />
                             </Button>

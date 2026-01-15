@@ -16,18 +16,18 @@ export default function Hero() {
                     Discover a curated selection of high-end electronics, fashion, and lifestyle essentials from top-rated sellers across India.
                 </p>
                 <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-                    <Link href="/products">
-                        <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 h-12 px-8">
+                    <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 h-12 px-8" asChild>
+                        <Link href="/products">
                             <ShoppingBag className="mr-2 h-5 w-5" />
                             Shop Now
-                        </Button>
-                    </Link>
-                    <Link href="/register">
-                        <Button size="lg" variant="outline" className="border-slate-800 h-12 px-8 hover:bg-slate-900">
+                        </Link>
+                    </Button>
+                    <Button size="lg" variant="outline" className="border-slate-800 h-12 px-8 hover:bg-slate-900" asChild>
+                        <Link href="/seller/onboarding">
                             Become a Seller
                             <ArrowRight className="ml-2 h-5 w-5 text-indigo-500" />
-                        </Button>
-                    </Link>
+                        </Link>
+                    </Button>
                 </div>
             </div>
         </section>

@@ -13,14 +13,15 @@ import {
     TrendingUp,
     Users,
     Wallet,
-    Loader2
+    Loader2,
+    LogOut
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 export default function SellerDashboard() {
-    const { user } = useAuthStore();
+    const { user, logoutSeller } = useAuthStore();
 
     const { data: overview, isLoading } = useQuery({
         queryKey: ['seller-overview'],
@@ -82,6 +83,14 @@ export default function SellerDashboard() {
                             Settings
                         </Button>
                     </Link>
+                    <Button
+                        onClick={logoutSeller}
+                        variant="outline"
+                        className="border-red-900/50 hover:bg-red-950/50 hover:border-red-800 text-red-400 hover:text-red-300"
+                    >
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Logout
+                    </Button>
                 </div>
             </div>
 

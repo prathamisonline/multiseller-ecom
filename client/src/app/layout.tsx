@@ -4,6 +4,7 @@ import './globals.css';
 import Navbar from '@/components/shared/Navbar';
 import QueryProvider from '@/components/shared/QueryProvider';
 import ErrorBoundary from '@/components/shared/ErrorBoundary';
+import SellerSyncProvider from '@/components/shared/SellerSyncProvider';
 import { Toaster } from 'sonner';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -37,9 +38,11 @@ export default function RootLayout({
       <body className={`${inter.className} bg-slate-950 text-slate-50 antialiased`}>
         <ErrorBoundary>
           <QueryProvider>
-            <Toaster position="bottom-right" theme="dark" richColors />
-            <Navbar />
-            <main className="min-h-screen">{children}</main>
+            <SellerSyncProvider>
+              <Toaster position="bottom-right" theme="dark" richColors />
+              <Navbar />
+              <main className="min-h-screen">{children}</main>
+            </SellerSyncProvider>
           </QueryProvider>
         </ErrorBoundary>
       </body>

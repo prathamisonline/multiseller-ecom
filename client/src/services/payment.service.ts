@@ -20,16 +20,16 @@ export interface PaymentVerificationData {
 export const paymentService = {
     createRazorpayOrder: async (orderId: string): Promise<RazorpayOrderResponse> => {
         const response = await api.post('/payments/create-order', { orderId });
-        return response.data;
+        return response.data.data || response.data;
     },
 
     verifyPayment: async (data: PaymentVerificationData): Promise<{ success: boolean; message: string }> => {
         const response = await api.post('/payments/verify', data);
-        return response.data;
+        return response.data.data || response.data;
     },
 
     getPaymentStatus: async (orderId: string): Promise<{ success: boolean; data: { status: string } }> => {
         const response = await api.get(`/payments/status/${orderId}`);
-        return response.data;
+        return response.data.data || response.data;
     },
 };

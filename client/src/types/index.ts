@@ -25,6 +25,10 @@ export interface Seller {
     ifscCode: string;
     bankName: string;
   };
+  commissionRate: number;
+  adminRemarks?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Product {

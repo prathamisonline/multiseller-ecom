@@ -13,9 +13,12 @@ import {
     CheckCircle,
     XCircle,
     AlertCircle,
-    Wallet
+    Wallet,
+    LogOut
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuthStore } from '@/store/authStore';
+import { Button } from '@/components/ui/button';
 
 const sidebarItems = [
     { icon: LayoutDashboard, label: 'Overview', href: '/admin' },
@@ -31,6 +34,7 @@ import AdminMobileSidebar from '@/components/admin/AdminMobileSidebar';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
+    const logoutAdmin = useAuthStore((state) => state.logoutAdmin);
 
     return (
         <div className="flex min-h-screen bg-slate-950">
@@ -72,8 +76,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     </nav>
                 </div>
 
-                <div className="absolute bottom-8 left-8 right-8">
-                    <div className="p-4 rounded-2xl bg-slate-900/40 border border-slate-800">
+                <div className="absolute bottom-8 left-8 right-8 space-y-3">
+                    <Button
+                        onClick={logoutAdmin}
+                        variant="outline"
+                        className="w-full border-red-900/50 hover:bg-red-950/50 hover:border-red-800 text-red-400 hover:text-red-300"
+                    >
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Admin Logout
+                    </Button>
+
+                    <div className="p-4 rounded-2xl bg-slate-900/40 border border-slate-800"
+                    >
                         <div className="flex items-center gap-3 mb-3">
                             <AlertCircle className="w-4 h-4 text-amber-500" />
                             <p className="text-[10px] font-black uppercase text-slate-500 tracking-widest">Platform Status</p>

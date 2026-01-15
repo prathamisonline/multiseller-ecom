@@ -58,7 +58,7 @@ export default function AdminProductsPage() {
         },
     });
 
-    const products = data?.data?.products || [];
+    const products = data?.products || [];
     const filteredProducts = products.filter((p: any) =>
         p.name.toLowerCase().includes(searchQuery.toLowerCase())
     );

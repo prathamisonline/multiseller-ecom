@@ -61,7 +61,7 @@ export default function AdminSellersPage() {
         },
     });
 
-    const sellers = data?.data?.sellers || [];
+    const sellers = data?.sellers || [];
     const filteredSellers = sellers.filter((s: any) =>
         s.storeName.toLowerCase().includes(searchQuery.toLowerCase())
     );

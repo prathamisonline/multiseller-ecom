@@ -10,22 +10,22 @@ export interface CartData {
 export const cartService = {
     getCart: async (): Promise<{ data: CartData }> => {
         const response = await api.get('/cart');
-        return response.data;
+        return response.data.data || response.data;
     },
 
     addToCart: async (productId: string, quantity: number = 1): Promise<{ data: CartData }> => {
         const response = await api.post('/cart/items', { productId, quantity });
-        return response.data;
+        return response.data.data || response.data;
     },
 
     updateQuantity: async (productId: string, quantity: number): Promise<{ data: CartData }> => {
         const response = await api.put(`/cart/items/${productId}`, { quantity });
-        return response.data;
+        return response.data.data || response.data;
     },
 
     removeItem: async (productId: string): Promise<{ data: CartData }> => {
         const response = await api.delete(`/cart/items/${productId}`);
-        return response.data;
+        return response.data.data || response.data;
     },
 
     clearCart: async (): Promise<void> => {
@@ -34,6 +34,6 @@ export const cartService = {
 
     validateCart: async (): Promise<any> => {
         const response = await api.post('/cart/validate');
-        return response.data;
+        return response.data.data || response.data;
     }
 };

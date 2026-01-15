@@ -31,7 +31,7 @@ export default function OrderHistoryPage() {
         queryFn: () => orderService.getMyOrders(),
     });
 
-    const orders = data?.data || [];
+    const orders = data?.orders || [];
 
     if (isLoading) {
         return (

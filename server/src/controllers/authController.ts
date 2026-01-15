@@ -32,6 +32,12 @@ const sendTokenResponse = (user: any, statusCode: number, res: Response) => {
 export const register = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const { name, email, password, role } = req.body;
 
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+        return next(new AppError('Email already registered. Please login or use a different email.', 400));
+    }
+
     // Create user
     const user = await User.create({
         name,
